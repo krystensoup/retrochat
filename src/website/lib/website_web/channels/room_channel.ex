@@ -25,9 +25,16 @@ defmodule WebsiteWeb.RoomChannel do
 
   # It is also common to receive messages from the client and
   # broadcast to everyone in the current topic (room:lobby).
+  # @impl true
+  # def handle_in("shout", payload, socket) do
+  #   broadcast(socket, "shout", payload)
+  #   {:noreply, socket}
+  # end
+
+  # broadcasts "new_msg" to everyone in the room
   @impl true
-  def handle_in("shout", payload, socket) do
-    broadcast(socket, "shout", payload)
+  def handle_in(event = "new_msg", %{"body" => body}, socket) do
+    broadcast!(socket, event, %{body: body})
     {:noreply, socket}
   end
 
